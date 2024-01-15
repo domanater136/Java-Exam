@@ -2,11 +2,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
 public class Tile extends JButton {
     Game GAME;
     int[] POS;
     boolean LOCKED = false;
+    Random rand = new Random();
     Icon IMAGE;
     // Values are: Defence, Attack, Delay, Unit Number, Power, Color (1 = Red, 2 = Blue, 3 = Green), Idle.
     // Values are: Defence, Attack, Delay, Unit Number
@@ -40,10 +42,12 @@ public class Tile extends JButton {
                 int modify = e.getModifiersEx(); //0 = left click, 256 = Right click
                 System.out.println(modify);
                 if (modify == 0) {
-                    GAME.deleteUnit(ID, POS[0], POS[1]);
+                    //GAME.deleteUnit(ID, POS[0], POS[1]);
+                    GAME.grabUnit(ID, POS[0], POS[1]);
                 }
                 else{
-                    int[] stats = {1, 5, 1, 0};
+                    int value = rand.nextInt(2);
+                    int[] stats = {1, 5, 1, value};
                     GAME.changeTile(ID, POS[0], POS[1], stats);
                     GAME.updateState();
                 }

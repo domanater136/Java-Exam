@@ -83,12 +83,14 @@ public class Game {
         UNIT_ICON[0] = new ImageIcon("classone.PNG");
         UNIT_ICON[1] = new ImageIcon("classtwo.PNG");
         UNIT_ICON[2] = new ImageIcon("classthree.PNG");
-        // Values are: Defence, Attack, Delay, Unit Number, Power, Color (1 = Red, 2 = Blue, 3 = Green), Idle.
+        UNIT_ICON[4] = new ImageIcon("classfour.PNG");
+        // Values are: Defence, Attack, Delay, Unit Number, Crnt Power, Color (0 = Red, 1 = Blue, 2 = Green), Extra.
         // Values are: Defence, Attack, Delay, Unit Number
         UNIT_STATS[0] = new int[]{1, 5, 1, 0};
         UNIT_STATS[1] = new int[]{2, 8, 2, 1};
         UNIT_STATS[2] = new int[]{3, 12, 3, 2};
         UNIT_STATS[3] = new int[]{0, 0, 0, 3};
+        UNIT_STATS[4] = new int[]{6, 0, 0, 3, 0, 0, 9};
     }
 
     public void changeTile(int player, int row, int column, int[] info) {
