@@ -1,4 +1,4 @@
-import javax.swing.JPanel;
+import javax.swing.*;
 import java.awt.*;
 
 public class GameScreen extends JPanel {
@@ -8,9 +8,5 @@ public class GameScreen extends JPanel {
         this.setPreferredSize(new Dimension(800, 800));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
-    }
-
-    public void addTile(Tile object) {
-        this.add(object);
     }
 }

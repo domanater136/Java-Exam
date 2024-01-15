@@ -2,7 +2,6 @@ public class Player {
     int ID;
     Game GAME;
     Board BOARD;
-    Tile[][] TILES = new Tile[8][6];
 
     // Constructor
      Player(int id, Game root) {
