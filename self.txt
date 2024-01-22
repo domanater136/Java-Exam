@@ -1,0 +1,41 @@
+Exam program notes:
+Make unit class
+Polymorphism unit class
+
+At the start of each turn, call set-up inside each unit.
+When ticking delay, call function in unit class so unit class can have unique delay effects
+When taking/dealing damage, call functin in unit class so unit class can have unique attacks.
+When checking unit count, call function in unit class.
+
+When Attacking:
+Get current power of Unit.
+Check the bottom most unit on enemy side.
+Deal damage to unit and reduce Power by that units Power.
+Repeat.
+If no unit on back tile: Deal power to enemy hp instead.
+
+Split Tile and Unit. Unit controls sprite and stats, Tile controls whats on it for board based actions.
+
+
+Holy Order Elites:
+1 Delay - Archer - When Attacking, deals double damage to walls
+2 Delay - Swordsmen - While Charing, Takes half damage
+3 Delay - Wizard - When Charging, Heal 3 HP per turn.
+
+
+
+Undead Army Elites:
+1 Delay - Ghost - When Attacking, Ignore One Wall and Deals double damage to Fomrations.
+2 Delay - Zombie - When Attacking, killing idle units grant this +2 Power.
+3 Delay - Litch - When Charging, grant all other formations +1 Power each delay.
+
+
+
+
+$8 + £16 deal = 3550 Multi
+3550 + 150 Current + 225 BattlePass = 3925
+
+Battle Pass - 1150
+Kawaii Candy shop - 1150
+Kawaii Paws - 1600
+= 3900

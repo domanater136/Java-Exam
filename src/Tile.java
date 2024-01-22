@@ -10,9 +10,9 @@ public class Tile extends JButton {
     boolean LOCKED = false;
     Random rand = new Random();
     Icon IMAGE;
-    // Values are: Defence, Attack, Delay, Unit Number, Power, Color (1 = Red, 2 = Blue, 3 = Green), Idle.
+    // Values are: Defence, Attack, Delay, Unit Number, Power, Color (1 = Red, 2 = Blue, 3 = Green), Status, Extra
     // Values are: Defence, Attack, Delay, Unit Number
-    int[] STATS = {0,0,0,3,0,0,0};
+    int[] STATS = {0,0,0,3,0,0,0,0};
     int ID;
     Tile(Game game, int[] position, int id){
         GAME = game;
@@ -40,15 +40,15 @@ public class Tile extends JButton {
 
             public void mouseClicked(MouseEvent e) {
                 int modify = e.getModifiersEx(); //0 = left click, 256 = Right click
-                System.out.println(modify);
                 if (modify == 0) {
                     //GAME.deleteUnit(ID, POS[0], POS[1]);
                     GAME.grabUnit(ID, POS[0], POS[1]);
                 }
                 else{
-                    int value = rand.nextInt(2);
-                    int[] stats = {1, 5, 1, value};
-                    GAME.changeTile(ID, POS[0], POS[1], stats);
+                    int value = rand.nextInt(3);
+                    System.out.println(value);
+                    int[] stats = game.generateUnitStats(value);
+                    GAME.setTile(ID, POS[0], POS[1], stats);
                     GAME.updateState();
                 }
             }
