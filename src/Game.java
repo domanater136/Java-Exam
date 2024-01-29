@@ -32,7 +32,7 @@ public class Game {
         ROOT.setLocationRelativeTo(null);
         ROOT.setVisible(true);
 
-        setTile(1, 3, 2, 1);
+        setTile(1, 3, 2, 2);
         updateState();
     }
 
@@ -40,17 +40,17 @@ public class Game {
         ROOT.add(obj);
     }
 
-    // TODO: Finish this me?????
+
     public UnitData generateUnitStats(int UnitNumber) {
         return UnitData.Wall;
-    }
+    } // TODO: Finish this me?????
 
     // Method to Grab and Drop units. Checks var IS GRABBING, and either deletes the unit and stores its info, or
     // spawns the unit to row of your choosing.
     public void grabUnit(int player, int row, int column){
         System.out.println(this.IS_GRABBING);
         if (!this.IS_GRABBING){//If not currently grabbing
-            int check = columnBehindUpmostAlly(player, row, column);
+            int check = columnBehindUpmostAlly(player, row, 0);
             if (check < 5){
                 check++;
                 UnitData info = checkTile(player, row, check);
@@ -62,13 +62,13 @@ public class Game {
                     this.GRAB_SAVE = new int[]{player, row, check};
                 }
             }
-
-
         }
+
+
         else { //If already grabbing
-            int drop = columnBehindUpmostAlly(player, row, column);
+            int drop = columnBehindUpmostAlly(player, row, 0);
             if (drop != 0){
-                setTile(player, row, column, GRABBED_UNIT.getUnitNumber());
+                setTile(player, row, drop, GRABBED_UNIT.getUnitNumber());
                 this.IS_GRABBING = false;
                 this.BOARDS[this.GRAB_SAVE[0]].TILES[this.GRAB_SAVE[1]][this.GRAB_SAVE[2]].grabColorUnLock();
             }
@@ -82,7 +82,6 @@ public class Game {
     }
 
     public void setTile(int player, int row, int column, int UnitNumber) {
-        System.out.println("adding unit");
         this.BOARDS[player].setTile(row, column, PLAYERS[player].FACTION, UnitNumber);
     }
 
@@ -110,9 +109,13 @@ public class Game {
     public int columnBehindUpmostAlly(int player, int row, int column){
         int current = column;
         UnitData check;
-        boolean loop = true;
+
+        boolean loop = current <= 5; // Dont check if Index is outside of Range
         while (loop) {
-            check = checkTile(player, row, current);
+            if (current < 6) {
+                check = checkTile(player, row, current);
+            } else {check = null;}
+
             if (check == null && current < 5){
                 current++;
             } else if (check != null) {
@@ -123,19 +126,23 @@ public class Game {
                 loop = false;
             }
         }
-        return current;
+        return Math.min(current, 5);
 
     }
     public void moveUnitUp(int player, int row, int column, UnitData Unit){
-        deleteTile(player, row, column);
-        int target = columnBehindUpmostAlly(player, row, column);
-        setTile(player, row, target, Unit.getUnitNumber());
+        int columncheck = columnBehindUpmostAlly(player, row, column+1) ;
+        if (columncheck != column) {
+            System.out.println("Moving unit up");
+            deleteTile(player, row, column);
+            int target = columnBehindUpmostAlly(player, row, column);
+            setTile(player, row, target, Unit.getUnitNumber());
+        }
     }
 
     public void updateState() {
         for (int Player = 0; Player < 2; Player++) {
             for (int Row = 0; Row < 8; Row++) {
-                for (int Column = 4; Column >= 0; Column--) { //Doesn't check top row to avoid index errors
+                for (int Column = 5; Column >= 0; Column--) {
                     UnitData tile = checkTile(Player, Row, Column);
                     if (tile != null){
                         moveUnitUp(Player, Row, Column, tile);

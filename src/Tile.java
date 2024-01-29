@@ -56,10 +56,11 @@ public class Tile extends JButton {
                     GAME.grabUnit(ID, POS[0], POS[1]);
                 }
                 else{
-                    int value = rand.nextInt(3);
+                    //int value = rand.nextInt(3);
+                    int value = 2;
                     System.out.println(value);
                     UnitData unit = UnitData.getUnitObject(GAME.getPlayerFaction(ID), value);
-                    editTile(unit, rand.nextInt(3));
+                    editTileWithUnitData(unit, rand.nextInt(3));
                     GAME.updateState();
                 }
             }
@@ -67,33 +68,35 @@ public class Tile extends JButton {
     }
 
     //Creates Tile Info using Unit Data and Color
-    public void editTile(UnitData unit, int Color){
-        IMAGE = unit.getImage();
+    public void editTileWithUnitData(UnitData unit, int Color){
+        IMAGE = unit.getImage(Color);
         UNIT = unit;
         COLOR = Color;
         this.setIcon(IMAGE);
 
     }
 
-    // Creates Tile info with Random Color. Default Choice
-    public void editTile(int Faction, int UnitNumber){
+    private UnitData getUnitInfo(int Faction, int UnitNumber){
         UnitData info = UnitData.getUnitObject(Faction, UnitNumber);
-        if (info != null) {
-            editTile(info, rand.nextInt(3)); //Generate R
-        }
-        else{
+        if (info != null){
+            return info;
+        }else{
             System.out.println("Something has gone wrong - Get Unit Values in Change Unit");
+            return null;
         }
+    }
 
+    // Creates Tile info with Random Color. Default Choice
+    public void editTileWithFaction(int Faction, int UnitNumber) {
+        editTileWithUnitData(getUnitInfo(Faction, UnitNumber), rand.nextInt(3));
     }
 
     // Creates tile info with chosen Color
-    public void editTile(int Faction, int UnitNumber, int Color){
-        UnitData info = UnitData.getUnitObject(Faction, UnitNumber);
-        this.COLOR = Color;
+    public void editTileWithFactionAndColor(int Faction, int UnitNumber, int Color){
+        editTileWithUnitData(getUnitInfo(Faction, UnitNumber), Color);
     }
 
-    public void editTile(){
+    public void deleteUnit(){
         IMAGE = new ImageIcon();
         UNIT = null;
         COLOR = 0;

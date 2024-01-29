@@ -34,9 +34,9 @@ public class Board {
     }
 
     public void setTile(int row, int column, int Faction, int UnitNumber){
-        TILES[row][column].editTile(Faction, UnitNumber);
+        TILES[row][column].editTileWithFaction(Faction, UnitNumber);
     }
     public void deleteTile(int row, int column){
-        TILES[row][column].editTile();
+        TILES[row][column].deleteUnit();
     }
 }
