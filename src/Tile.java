@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.util.Random;
 
 public class Tile extends JButton {
@@ -10,14 +9,26 @@ public class Tile extends JButton {
     boolean LOCKED = false;
     Random rand = new Random();
     Icon IMAGE;
-    // Values are: Defence, Attack, Delay, Unit Number, Power, Color (1 = Red, 2 = Blue, 3 = Green), Status, Extra
-    // Values are: Defence, Attack, Delay, Unit Number
-    int[] STATS = {0,0,0,3,0,0,0,0};
+    UnitData UNIT;
+    //(0 = Null, 1 = Red, 2 = Blue, 3 = Green)
+    int COLOR = 0;
     int ID;
     Tile(Game game, int[] position, int id){
         GAME = game;
         POS = position;
         ID = id;
+        this.setDefault();
+        // this.setBorderPainted(false);
+    }
+
+    Tile(Game game, int[] position, int id, int faction, int stats){
+        GAME = game;
+        POS = position;
+        ID = id;
+        this.setDefault();
+        // this.setBorderPainted(false);
+    }
+    private void setDefault(){
         this.setOpaque(false);
         this.setContentAreaFilled(false);
         this.setBackground(Color.blue);
@@ -47,24 +58,50 @@ public class Tile extends JButton {
                 else{
                     int value = rand.nextInt(3);
                     System.out.println(value);
-                    int[] stats = game.generateUnitStats(value);
-                    GAME.setTile(ID, POS[0], POS[1], stats);
+                    UnitData unit = UnitData.getUnitObject(GAME.getPlayerFaction(ID), value);
+                    editTile(unit, rand.nextInt(3));
                     GAME.updateState();
                 }
             }
         });
-        // this.setBorderPainted(false);
     }
 
-    public void changeUnit(Icon image, int[] info){
-        IMAGE = image;
-        STATS = info;
+    //Creates Tile Info using Unit Data and Color
+    public void editTile(UnitData unit, int Color){
+        IMAGE = unit.getImage();
+        UNIT = unit;
+        COLOR = Color;
         this.setIcon(IMAGE);
 
     }
 
-    public int[] returnStats(){
-        return STATS;
+    // Creates Tile info with Random Color. Default Choice
+    public void editTile(int Faction, int UnitNumber){
+        UnitData info = UnitData.getUnitObject(Faction, UnitNumber);
+        if (info != null) {
+            editTile(info, rand.nextInt(3)); //Generate R
+        }
+        else{
+            System.out.println("Something has gone wrong - Get Unit Values in Change Unit");
+        }
+
+    }
+
+    // Creates tile info with chosen Color
+    public void editTile(int Faction, int UnitNumber, int Color){
+        UnitData info = UnitData.getUnitObject(Faction, UnitNumber);
+        this.COLOR = Color;
+    }
+
+    public void editTile(){
+        IMAGE = new ImageIcon();
+        UNIT = null;
+        COLOR = 0;
+        this.setIcon(IMAGE);
+    }
+
+    public UnitData returnUnit(){
+        return UNIT;
     }
 
     public void grabColorLock(){

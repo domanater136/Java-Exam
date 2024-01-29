@@ -10,9 +10,9 @@ public class Board {
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 6; j++) {
                     int[] position = {i, j};
-                    TILES[i][j] = new Tile(GAME, position, ID);
-                    TILES[i][j].setBounds(50 * i, 50 * j, 50, 50);
-                    GAME.addTile(TILES[i][j]);
+                    this.TILES[i][j] = new Tile(GAME, position, ID);
+                    this.TILES[i][j].setBounds(50 * i, 50 * j, 50, 50);
+                    this.GAME.addTile(TILES[i][j]);
                 }
             }
         }
@@ -20,16 +20,23 @@ public class Board {
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 6; j++) {
                     int[] position = {i, j};
-                    TILES[i][j] = new Tile(GAME, position, ID);
-                    TILES[i][j].setBounds(50 * i, 700 - 50 * j, 50, 50);
-                    GAME.addTile(TILES[i][j]);
+                    this.TILES[i][j] = new Tile(GAME, position, ID);
+                    this.TILES[i][j].setBounds(50 * i, 700 - 50 * j, 50, 50);
+                    this.GAME.addTile(TILES[i][j]);
                 }
             }
         }
 
     }
 
-    public Tile returnTile(int column, int row){
-        return TILES[row][column];
+    public Tile returnTile(int row, int column){
+        return this.TILES[row][column];
+    }
+
+    public void setTile(int row, int column, int Faction, int UnitNumber){
+        TILES[row][column].editTile(Faction, UnitNumber);
+    }
+    public void deleteTile(int row, int column){
+        TILES[row][column].editTile();
     }
 }

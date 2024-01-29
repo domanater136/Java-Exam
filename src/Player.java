@@ -3,17 +3,18 @@ public class Player {
     Game GAME;
     Board BOARD;
 
+    int FACTION;
+
     // Constructor
      Player(int id, Game root) {
-        System.out.println("Constructor Called");
         ID = id;
         GAME = root;
         BOARD = new Board(GAME, ID);
+        FACTION = 1;
     }
-    public Board getBoard(){
-         return BOARD;
-    }
+    public Board getBoard(){ return BOARD; }
 
+    public int getFaction() { return FACTION; }
 }
 
 

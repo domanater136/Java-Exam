@@ -28,14 +28,3 @@ Undead Army Elites:
 1 Delay - Ghost - When Attacking, Ignore One Wall and Deals double damage to Fomrations.
 2 Delay - Zombie - When Attacking, killing idle units grant this +2 Power.
 3 Delay - Litch - When Charging, grant all other formations +1 Power each delay.
-
-
-
-
-$8 + £16 deal = 3550 Multi
-3550 + 150 Current + 225 BattlePass = 3925
-
-Battle Pass - 1150
-Kawaii Candy shop - 1150
-Kawaii Paws - 1600
-= 3900

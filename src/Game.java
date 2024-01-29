@@ -3,16 +3,15 @@ import java.awt.*;
 import java.util.Random;
 
 public class Game {
-    Player[] PLAYERS = new Player[2];
-    Board[] BOARDS = new Board[2];
-    JFrame ROOT = new JFrame();
-    GameScreen GAMESCREEN;
-    Icon[] UNIT_ICON = new Icon[5];
-    int[][] UNIT_STATS = new int[5][4];
-
-    int IS_GRABBING = -1;
-    int[] GRAB_SAVE;
-    Random rand = new Random();
+    private Player[] PLAYERS = new Player[2];
+    private Board[] BOARDS = new Board[2];
+    private JFrame ROOT = new JFrame();
+    private GameScreen GAMESCREEN;
+    private Boolean IS_GRABBING = false;
+    private int[] GRAB_SAVE;
+    private UnitData GRABBED_UNIT;
+    private final Random rand = new Random();
+    private int CurrentPlayer = 0;
 
     Game() {
         ROOT.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -33,9 +32,7 @@ public class Game {
         ROOT.setLocationRelativeTo(null);
         ROOT.setVisible(true);
 
-        unitValues();
-
-        setTile(1, 3, 2, UNIT_STATS[1]);
+        setTile(1, 3, 2, 1);
         updateState();
     }
 
@@ -43,88 +40,63 @@ public class Game {
         ROOT.add(obj);
     }
 
-    // Values are: Defence, Attack, Delay, Unit Number, Crnt Power, Color (0 = Red, 1 = Blue, 2 = Green), idle, Extra.
-    public int[] generateUnitStats(int unitnum) {
-        int[] info = new int[8];
-                for (int i = 0; i < 4; i++){
-                    info[i] = UNIT_STATS[unitnum][i];
-        }
-        int value = rand.nextInt(3);
-        info[4] = info[0];
-        info[5] = rand.nextInt(3);
-        info[6] = 0;
-        info[7] = 0;
-        return info;
+    // TODO: Finish this me?????
+    public UnitData generateUnitStats(int UnitNumber) {
+        return UnitData.Wall;
     }
 
+    // Method to Grab and Drop units. Checks var IS GRABBING, and either deletes the unit and stores its info, or
+    // spawns the unit to row of your choosing.
     public void grabUnit(int player, int row, int column){
-        System.out.println(IS_GRABBING);
-        if (IS_GRABBING == -1){
+        System.out.println(this.IS_GRABBING);
+        if (!this.IS_GRABBING){//If not currently grabbing
             int check = columnBehindUpmostAlly(player, row, column);
             if (check < 5){
                 check++;
-                int[] info = checkTile(player, row, check);
-                if (info[3] != 3) {
-                    IS_GRABBING = info[3];
-                    setTile(player, row, check, UNIT_STATS[3]);
-                    BOARDS[player].TILES[row][check].grabColorLock();
-                    GRAB_SAVE = new int[]{player, row, check};
+                UnitData info = checkTile(player, row, check);
+                if (info.getUnitNumber() != 0) {
+                    this.IS_GRABBING = true;
+                    this.GRABBED_UNIT = info;
+                    deleteTile(player, row, check);
+                    this.BOARDS[player].TILES[row][check].grabColorLock();
+                    this.GRAB_SAVE = new int[]{player, row, check};
                 }
             }
 
 
         }
-        else {
+        else { //If already grabbing
             int drop = columnBehindUpmostAlly(player, row, column);
             if (drop != 0){
-                setTile(player, row, column, UNIT_STATS[IS_GRABBING]);
-                IS_GRABBING = -1;
-                BOARDS[GRAB_SAVE[0]].TILES[GRAB_SAVE[1]][GRAB_SAVE[2]].grabColorUnLock();
+                setTile(player, row, column, GRABBED_UNIT.getUnitNumber());
+                this.IS_GRABBING = false;
+                this.BOARDS[this.GRAB_SAVE[0]].TILES[this.GRAB_SAVE[1]][this.GRAB_SAVE[2]].grabColorUnLock();
             }
         }
         updateState();
 
     }
 
-    public void deleteUnit(int player, int row, int column){
-        int[] info = checkTile(player, row, column);
-        if (info[3] != 3){
-            setTile(player, row, column, UNIT_STATS[3]);
-            updateState();
-        }
+    public void deleteTile(int player, int row, int column){
+        this.BOARDS[player].deleteTile(row, column);
     }
 
-
-    private void unitValues() {
-        UNIT_ICON[0] = new ImageIcon("archer.JPG");
-        UNIT_ICON[1] = new ImageIcon("swordsmen.JPG");
-        UNIT_ICON[2] = new ImageIcon("wizard.JPG");
-        UNIT_ICON[4] = new ImageIcon("wall.JPG");
-        // Values are: Defence, Attack, Delay, Unit Number, Crnt Power, Color (0 = Red, 1 = Blue, 2 = Green), idle, Extra.
-        // Values are: Defence, Attack, Delay, Unit Number
-        UNIT_STATS[0] = new int[]{1, 5, 1, 0};
-        UNIT_STATS[1] = new int[]{2, 8, 2, 1};
-        UNIT_STATS[2] = new int[]{3, 12, 3, 2};
-        UNIT_STATS[3] = new int[]{0, 0, 0, 3};
-        UNIT_STATS[4] = new int[]{6, 0, 0, 3, 0, 0, 0, 9};
-    }
-
-    public void setTile(int player, int row, int column, int[] info) {
+    public void setTile(int player, int row, int column, int UnitNumber) {
         System.out.println("adding unit");
-        BOARDS[player].TILES[row][column].changeUnit(UNIT_ICON[info[3]], info);
+        this.BOARDS[player].setTile(row, column, PLAYERS[player].FACTION, UnitNumber);
     }
 
-    public int[] checkTile(int player, int row, int column) {
-        return BOARDS[player].TILES[row][column].returnStats();
+    private UnitData checkTile(int player, int row, int column) {
+        return this.BOARDS[player].returnTile(row, column).returnUnit();
     }
 
     public void checkFormation(int player, int row, int column) {
         if (column < 4) {
-            int[][] unitCheck = new int[3][4];
+            UnitData[] unitCheck = new UnitData[3];
             unitCheck[0] = checkTile(player, row, column);
             unitCheck[1] = checkTile(player, row, column + 1);
             unitCheck[2] = checkTile(player, row, column + 2);
-            if (unitCheck[0][2] == unitCheck[1][2] && unitCheck[1][2] == unitCheck[2][2]) {
+            if (unitCheck[0] == unitCheck[1] && unitCheck[1] == unitCheck[2]) {
                 spawnFormation(player, row, column);
             }
         }
@@ -137,13 +109,13 @@ public class Game {
 
     public int columnBehindUpmostAlly(int player, int row, int column){
         int current = column;
-        int[] check;
+        UnitData check;
         boolean loop = true;
         while (loop) {
             check = checkTile(player, row, current);
-            if (check[3] == 3 && current < 5){
+            if (check == null && current < 5){
                 current++;
-            } else if (check[3] != 3) {
+            } else if (check != null) {
                 loop = false;
                 current--;
             }
@@ -154,26 +126,28 @@ public class Game {
         return current;
 
     }
-    public void moveUnitUp(int player, int row, int column, int[] info){
-        setTile(player, row, column, UNIT_STATS[3]);
+    public void moveUnitUp(int player, int row, int column, UnitData Unit){
+        deleteTile(player, row, column);
         int target = columnBehindUpmostAlly(player, row, column);
-        setTile(player, row, target, info);
+        setTile(player, row, target, Unit.getUnitNumber());
     }
 
     public void updateState() {
-        for (int k = 0; k < 2; k++) {
-            for (int i = 0; i < 8; i++) {
-                for (int j = 4; j >= 0; j--) { //Doesn't check top row to avoid index errors
-                    int[] tile = checkTile(k, i, j);
-                    if (tile[3] != 3){
-                        moveUnitUp(k, i, j, tile);
-                        checkFormation(k, i, j);
+        for (int Player = 0; Player < 2; Player++) {
+            for (int Row = 0; Row < 8; Row++) {
+                for (int Column = 4; Column >= 0; Column--) { //Doesn't check top row to avoid index errors
+                    UnitData tile = checkTile(Player, Row, Column);
+                    if (tile != null){
+                        moveUnitUp(Player, Row, Column, tile);
+                        checkFormation(Player, Row, Column);
                     }
 
                 }
             }
         }
-
     }
+
+    public Player[] getPlayers(int ID){return PLAYERS;}
+    public int getPlayerFaction(int ID){return PLAYERS[ID].getFaction();}
 }
 
