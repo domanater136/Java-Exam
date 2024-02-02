@@ -52,15 +52,10 @@ public class Tile extends JButton {
             public void mouseClicked(MouseEvent e) {
                 int modify = e.getModifiersEx(); //0 = left click, 256 = Right click
                 if (modify == 0) {
-                    //GAME.deleteUnit(ID, POS[0], POS[1]);
                     GAME.grabUnit(ID, POS[0], POS[1]);
                 }
                 else{
-                    //int value = rand.nextInt(3);
-                    int value = 2;
-                    System.out.println(value);
-                    UnitData unit = UnitData.getUnitObject(GAME.getPlayerFaction(ID), value);
-                    editTileWithUnitData(unit, rand.nextInt(3));
+                    GAME.deleteTile(ID, POS[0], POS[1]);
                     GAME.updateState();
                 }
             }

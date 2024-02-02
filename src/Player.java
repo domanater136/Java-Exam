@@ -3,6 +3,7 @@ public class Player {
     Game GAME;
     Board BOARD;
     int ACTIONS;
+    int REINFORCETOTAL;
 
     int FACTION;
 
@@ -17,6 +18,9 @@ public class Player {
     public Board getBoard(){ return BOARD; }
 
     public int getFaction() { return FACTION; }
+
+    public int getReinforce() { return REINFORCETOTAL; }
+    public void setReinforce(int New) { REINFORCETOTAL = New; }
 }
 
 
