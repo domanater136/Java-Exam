@@ -7,6 +7,5 @@ public class GameScreen extends JPanel {
         GAME = root;
         this.setPreferredSize(new Dimension(800, 800));
         this.setBackground(Color.black);
-        this.setDoubleBuffered(true);
     }
 }

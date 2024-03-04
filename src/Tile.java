@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Random;
 
 public class Tile extends JButton {
@@ -10,8 +11,7 @@ public class Tile extends JButton {
     Random rand = new Random();
     Icon IMAGE;
     UnitData UNIT;
-    //(0 = Null, 1 = Red, 2 = Blue, 3 = Green)
-    int COLOR = 0;
+    int COLOR = 0; //(0 = Null, 1 = Red, 2 = Blue, 3 = Green)
     int ID;
     Tile(Game game, int[] position, int id){
         GAME = game;
@@ -36,21 +36,21 @@ public class Tile extends JButton {
         this.setIcon(IMAGE);
 
         this.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt){
+            public void mouseEntered(java.awt.event.MouseEvent event){
                 if (!LOCKED){
-                    Tile tile = (Tile)evt.getComponent();
+                    Tile tile = (Tile)event.getComponent();
                     tile.setOpaque(true);
                 }
             }
-            public void mouseExited(java.awt.event.MouseEvent evt){
+            public void mouseExited(java.awt.event.MouseEvent event){
                 if (!LOCKED){
-                    Tile tile = (Tile)evt.getComponent();
+                    Tile tile = (Tile)event.getComponent();
                     tile.setOpaque(false);
                 }
             }
 
-            public void mouseClicked(MouseEvent e) {
-                int modify = e.getModifiersEx(); //0 = left click, 256 = Right click
+            public void mouseClicked(MouseEvent event) {
+                int modify = event.getModifiersEx(); //0 = left click, 256 = Right click
                 if (modify == 0) {
                     GAME.grabUnit(ID, POS[0], POS[1]);
                 }
@@ -77,7 +77,7 @@ public class Tile extends JButton {
             return info;
         }else{
             System.out.println("Something has gone wrong - Get Unit Values in Change Unit");
-            return null;
+            return info; //Will be Null
         }
     }
 

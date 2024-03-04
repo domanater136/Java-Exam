@@ -3,7 +3,7 @@
 
 import javax.swing.*;
 
-// Values are: Unit Number, Image, Defence, Attack, Delay, Idle, Extra (9 = Wall | 10* = Ability)
+// Values are: Unit Number, Image(Red, Green, Blue), Defence, Attack, Delay, Idle, Extra (9 = Wall | 10* = Ability)
 public enum UnitData {
     Wall(1, 0, new ImageIcon[]{new ImageIcon("wall.JPG"), new ImageIcon("wall.JPG"), new ImageIcon("wall.JPG")}, 6, 0, 1, true, 9),
     Archer(1, 1, new ImageIcon[]{new ImageIcon("sprites/archerRed.png"), new ImageIcon("sprites/archerGreen.png"), new ImageIcon("sprites/archerBlue.png")}, 2, 5, 1, true, 0),
@@ -11,13 +11,14 @@ public enum UnitData {
     Wizard(1, 3, new ImageIcon[]{new ImageIcon("sprites/wizardRed.png"), new ImageIcon("sprites/wizardGreen.png"), new ImageIcon("sprites/wizardBlue.png")},2, 12, 3, true, 0),
     ;
 
+
     private final int Faction;
     private final int UnitNumber;
     private final ImageIcon[] Images;
     private final int Defence;
     private final int Attack;
     private final int Delay;
-    private boolean Idle;
+    private final boolean Idle;
     private final int Extra;
     private static final UnitData[] Values = UnitData.values();
     private static final int MAX = UnitData.values().length;
@@ -53,8 +54,6 @@ public enum UnitData {
     public int getDelay() {return this.Delay;}
 
     public boolean getIdle() {return this.Idle;}
-
-    public void setIdle(Boolean Idle) {this.Idle = Idle;}
 
     public int getExtra() {return this.Extra;}
 }

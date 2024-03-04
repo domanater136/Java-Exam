@@ -17,6 +17,10 @@ If no unit on back tile: Deal power to enemy hp instead.
 Split Tile and Unit. Unit controls sprite and stats, Tile controls whats on it for board based actions.
 
 
+TODO IMPORTANT: REWORK COLORS. Save all unit data under each player, then use those to summon units. Remove unitdata from everywhere else. Refactor "Color" into a type of UnitID, so 2 units with the same unit number don't mix. This is cus each color is unique and no other unit can share the same color.
+
+
+
 Holy Order Elites:
 1 Delay - Archer - When Attacking, deals double damage to walls
 2 Delay - Swordsmen - While Charing, Takes half damage
