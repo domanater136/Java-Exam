@@ -16,7 +16,14 @@ public class Player {
         BOARD = new Board(GAME, ID);
         FACTION = 1;
         ACTIONS = 3;
-        UNITS = Units;
+        UNITS = debugTest(Units);
+    }
+
+    private UnitData[] debugTest(UnitData[] Units){
+        for (int unit = 0; unit < 2; unit++) {
+            Units[unit].setColor(unit);
+        }
+        return Units;
     }
     public Board getBoard(){ return BOARD; }
 

@@ -15,7 +15,7 @@ public class Game {
 
     Game() { //Game Initialization
         varsInit();
-        setTile(1, 3, 2, 2);
+        setTile(1, 3, 2, getPlayerUnitData(1, rand.nextInt(0, 3)));
         updateState();
     }
 
@@ -54,9 +54,7 @@ public class Game {
         return UnitData.Wall;
     } // TODO: Finish this me?????
 
-    public UnitData generateRandomUnit(int Faction) {
-        return UnitData.getUnitObject(Faction, rand.nextInt(3));
-    }
+    public UnitData generateRandomUnit(int id) { return PLAYERS[id].getSpecificUnit(rand.nextInt(3)); }
 
     // Method to Grab and Drop units. Checks var IS GRABBING, and either deletes the unit and stores its info, or
     // spawns the unit to row of your choosing.
@@ -99,9 +97,13 @@ public class Game {
         this.BOARDS[player].deleteTile(row, column);
     }
 
+    private UnitData getPlayerUnitData(int playerid, int color){
+        return this.PLAYERS[playerid].getSpecificUnit(color);
+    }
+
     //Sets the tile to a specific unit
-    public void setTile(int player, int row, int column, int UnitNumber) {
-        this.BOARDS[player].setTile(row, column, PLAYERS[player].FACTION, UnitNumber);
+    public void setTile(int playerid, int row, int column, UnitData data) {
+        this.BOARDS[playerid].setTile(row, column, data);
     }
 
     //Sets the tile to a specific unit, with a color. TODO: remove this when refactoring colors
@@ -226,10 +228,10 @@ public class Game {
     }
 
     //Fills the player's board, so they have 32 total units. TODO: Make this check for matches.
-    public void reinforceBoard(int ID){
-        int total = PLAYERS[ID].getReinforce();
+    public void reinforceBoard(int PlayerID){
+        int total = PLAYERS[PlayerID].getReinforce();
         for (int x = 0; x < total; x++){
-            setTile(ID, rand.nextInt(0,8), 0, rand.nextInt(1, 4));
+            setTile(PlayerID, rand.nextInt(0,8), 0, getPlayerUnitData(PlayerID, rand.nextInt(0, 3)));
             this.updateState();
         }
     }

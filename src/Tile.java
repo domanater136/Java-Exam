@@ -63,10 +63,10 @@ public class Tile extends JButton {
     }
 
     //Creates Tile Info using Unit Data and Color
-    public void editTileWithUnitData(UnitData unit, int Color){
-        IMAGE = unit.getImage(Color);
+    public void editTileWithUnitData(UnitData unit){
+        IMAGE = unit.getImage(unit.getColor());
         UNIT = unit;
-        COLOR = Color;
+        COLOR = unit.getColor();
         this.setIcon(IMAGE);
 
     }

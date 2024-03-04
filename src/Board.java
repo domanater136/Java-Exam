@@ -38,8 +38,8 @@ public class Board {
         return this.TILES[row][column];
     }
 
-    public void setTile(int row, int column, int Faction, int UnitNumber){
-        TILES[row][column].editTileWithFaction(Faction, UnitNumber);
+    public void setTile(int row, int column, UnitData Unit){
+        TILES[row][column].editTileWithUnitData(Unit);
     }
 
     public void setTileWithColor(int row, int column, int Faction, int UnitNumber, int Color){
