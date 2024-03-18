@@ -71,7 +71,7 @@ public class Game {
                     int color = this.BOARDS[player].TILES[row][check].COLOR;
                     deleteTile(player, row, check);
                     this.BOARDS[player].TILES[row][check].grabColorLock();
-                    this.GRAB_SAVE = new int[]{player, row, check, color};
+                    this.GRAB_SAVE = new int[]{player, row, check};
                 }
             }
         }
@@ -80,7 +80,7 @@ public class Game {
         else { //If already grabbing
             int drop = columnBehindUpmostAlly(player, row, 0);
             if (drop >= 0){
-                setTileWithColor(player, row, drop, GRABBED_UNIT.getUnitNumber(), this.GRAB_SAVE[3]);
+                setTile(player, row, drop, GRABBED_UNIT);
                 this.IS_GRABBING = false;
                 this.BOARDS[this.GRAB_SAVE[0]].TILES[this.GRAB_SAVE[1]][this.GRAB_SAVE[2]].grabColorUnLock();
             }
@@ -104,11 +104,6 @@ public class Game {
     //Sets the tile to a specific unit
     public void setTile(int playerid, int row, int column, UnitData data) {
         this.BOARDS[playerid].setTile(row, column, data);
-    }
-
-    //Sets the tile to a specific unit, with a color. TODO: remove this when refactoring colors
-    public void setTileWithColor(int player, int row, int column, int UnitNumber, int Color) {
-        this.BOARDS[player].setTileWithColor(row, column, PLAYERS[player].FACTION, UnitNumber, Color);
     }
 
     //Gets the UnitData in a tile.
@@ -205,7 +200,7 @@ public class Game {
             int color = getTile(player, row, column).COLOR;
             deleteTile(player, row, column);
             int target = columnBehindUpmostAlly(player, row, column);
-            setTileWithColor(player, row, target, Unit.getUnitNumber(), color);
+            setTile(player, row, target, Unit);
         }
     }
 

@@ -42,9 +42,6 @@ public class Board {
         TILES[row][column].editTileWithUnitData(Unit);
     }
 
-    public void setTileWithColor(int row, int column, int Faction, int UnitNumber, int Color){
-        TILES[row][column].editTileWithFactionAndColor(Faction, UnitNumber, Color);
-    }
     public void deleteTile(int row, int column){
         TILES[row][column].deleteUnit();
     }

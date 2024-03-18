@@ -81,16 +81,6 @@ public class Tile extends JButton {
         }
     }
 
-    // Creates Tile info with Random Color. Default Choice
-    public void editTileWithFaction(int Faction, int UnitNumber) {
-        editTileWithUnitData(getUnitInfo(Faction, UnitNumber), rand.nextInt(3));
-    }
-
-    // Creates tile info with chosen Color
-    public void editTileWithFactionAndColor(int Faction, int UnitNumber, int Color){
-        editTileWithUnitData(getUnitInfo(Faction, UnitNumber), Color);
-    }
-
     public void deleteUnit(){
         IMAGE = new ImageIcon();
         UNIT = null;
